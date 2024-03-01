@@ -69,4 +69,138 @@ JOIN input_1.Supplier_pricing
 USING ( supp_id )
 JOIN input_1.Product
 USING ( pro_id )
-WHERE input_1.Supplier.supp_name LIKE 'Rajesh Retails'
+WHERE input_1.Supplier.supp_name LIKE 'Rajesh Retails';
+
+8)
+SELECT input_1.customer.cus_name, COUNT( * ) as 'Number of orders'
+FROM input_1.customer
+JOIN input_1.order
+on input_1.customer.cus_id = input_1.order.cus_id
+GROUP BY input_1.customer.cus_name
+having COUNT( * ) >3;
+
+9)
+SELECT input_1.customer.cus_name, COUNT( * ) as 'Number of orders'
+FROM input_1.customer.customer
+JOIN input_1.customer.orders
+USING ( input_1.customer.cus_id )
+GROUP BY input_1.customer.cus_name
+having COUNT( * ) >3;
+
+
+q10)
+SELECT input_1.customer.cus_name
+FROM input_1.customer
+LEFT JOIN input_1.order
+USING ( cus_id )
+WHERE input_1.order.ord_id IS NULL;
+
+q11)
+
+SELECT input_1.order.ord_id,input_1.product.pro_name,input_1.product.pro_desc
+FROM input_1.customer
+JOIN input_1.order
+USING ( cus_id )
+JOIN input_1.supplier_pricing
+USING ( pricing_id )
+JOIN input_1.product
+USING ( pro_id )
+WHERE input_1.customer.cus_name LIKE 'AAKASH';
+
+q12 )
+SELECT  input_1.supplier.supp_name, COUNT( * )
+FROM input_1.supplier
+JOIN input_1.supplier_pricing
+USING ( supp_id )
+JOIN input_1.product
+USING ( pro_id )
+GROUP BY input_1.supplier.supp_name
+having COUNT( * ) > 2;
+
+q13) 
+select input_1.customer.CUS_NAME
+from input_1.customer
+where input_1.customer.cus_name like 'A%' or input_1.customer.cus_name like '%A';
+
+
+q14) 
+
+SELECT input_1.Product.pro_name
+FROM input_1.product
+JOIN input_1.supplier_pricing
+USING ( pro_id )
+JOIN input_1.order
+USING ( pricing_id )
+WHERE input_1.order.ord_date > "2021-10-05";
+
+q15)
+SELECT input_1.customer.cus_gender, count(*)
+FROM input_1.customer
+JOIN input_1.order
+USING ( cus_id )
+JOIN input_1.supplier_pricing
+USING ( pricing_id )
+WHERE input_1.supplier_pricing.supp_price >3000
+group by input_1.customer.cus_gender;
+
+
+q16)
+
+SELECT input_1.category.cat_name, input_1.product.pro_name, input_1.product.pro_desc, MIN( input_1.supplier_pricing.supp_price )
+FROM input_1.category
+JOIN input_1.product
+USING ( cat_id )
+JOIN input_1.supplier_pricing
+USING ( pro_id )
+GROUP BY input_1.category.cat_name;
+q17 )
+
+SELECT input_1.supplier.supp_name, AVG( stars )
+FROM input_1.supplier
+JOIN input_1.supplier_pricing
+USING ( supp_id )
+JOIN input_1.order
+USING ( pricing_id )
+JOIN input_1.rating
+USING ( ord_id )
+GROUP BY input_1.supplier.supp_name;
+
+SELECT input_1.supplier.supp_name, AVG( stars ),
+Case
+when AVG( stars )=5 then 'Excellent Service'
+when AVG( stars )>4 then 'Good Service'
+when AVG( stars )>3 then 'Average Service'
+else 'Poor Service'
+end as 'Supplier Category'
+FROM input_1.supplier
+JOIN input_1.supplier_pricing
+USING ( supp_id )
+JOIN input_1.orders
+USING ( pricing_id )
+JOIN input_1.rating
+USING ( ord_id )
+GROUP BY input_1.supplier.supp_name;
+
+DELIMITER &&  
+	CREATE PROCEDURE supplierValue()
+	BEGIN
+	SELECT input_1.supplier.supp_name, AVG( stars ),
+Case
+when AVG( stars )=5 then 'Excellent Service'
+when AVG( stars )>4 then 'Good Service'
+when AVG( stars )>3 then 'Average Service'
+else 'Poor Service'
+end as 'Supplier Category'
+FROM input_1.supplier
+JOIN input_1.supplier_pricing
+USING ( supp_id )
+JOIN input_1.orders
+USING ( pricing_id )
+JOIN input_1.rating
+USING ( ord_id )
+GROUP BY input_1.supplier.supp_name;
+	END &&  
+	DELIMITER ;
+
+
+call supplierValue()
