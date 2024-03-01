@@ -1,0 +1,72 @@
+q1) 
+SELECT COUNT( * ) AS 'Number Of Orders'
+FROM input_1.customer c, input_1.order o
+WHERE c.cus_id = o.cus_id
+AND cus_name LIKE 'AAKASH';
+
+q2) 
+SELECT COUNT( * ) AS 'Number Of Orders'
+FROM input_1.customer
+join
+input_1.order
+on
+input_1.customer.CUS_ID=input_1.order.CUS_ID
+and
+input_1.customer.cus_name in('AAKASH','AMAN');
+
+
+q3) 
+SELECT input_1.customer.cus_name
+FROM input_1.customer
+WHERE input_1.customer.cus_city
+IN (
+'Delhi', 'Mumbai'
+)
+q3) 
+SELECT COUNT( * ) AS 'Number Of Orders'
+FROM input_1.customer
+join
+input_1.order
+on
+input_1.customer.CUS_ID =input_1.order.cus_id
+and
+input_1.customer.cus_name like 'AAKASH';
+
+
+q4) 
+SELECT COUNT( * ) AS 'Number Of Orders'
+FROM input_1.customer c, input_1.order o
+WHERE c.cus_id = o.cus_id
+AND cus_name LIKE 'AAKASH';
+q5) 
+SELECT input_1.supplier.SUPP_NAME, sum(input_1.supplier_pricing.supp_price)
+FROM input_1.supplier
+JOIN input_1.supplier_pricing
+USING (supp_id )
+group by input_1.supplier.supp_id;
+
+q6) 
+SELECT input_1.supplier.supp_city
+FROM input_1.supplier
+JOIN input_1.supplier_pricing
+USING ( supp_id )
+where input_1.supplier.supp_city like 'Delhi'
+GROUP BY input_1.supplier.supp_city;
+
+
+q6) 
+SELECT input_1.supplier.supp_name, SUM( input_1.supplier_pricing.supp_price )
+FROM input_1.supplier
+JOIN input_1.supplier_pricing
+USING ( supp_id )
+GROUP BY input_1.supplier.supp_id
+having SUM( input_1.supplier_pricing.supp_price )>30000;
+
+q7) 
+SELECT input_1.Product.pro_name, input_1.Supplier_pricing.supp_price
+FROM input_1.Supplier
+JOIN input_1.Supplier_pricing
+USING ( supp_id )
+JOIN input_1.Product
+USING ( pro_id )
+WHERE input_1.Supplier.supp_name LIKE 'Rajesh Retails'
